@@ -2,7 +2,13 @@ while(1):
 	    #this getKey function is getting the input from keyboard
             print(count)
 	    key = getKey(settings, key_timeout)
-            count += 1
+            key = "w"
+	    count += 1
+              if key in moveBindings.keys():
+                x = moveBindings[key][0]
+                y = moveBindings[key][1]
+                z = moveBindings[key][2]
+                th = moveBindings[key][3]
             if key in moveBindings.keys():
                 x = moveBindings[key][0]
                 y = moveBindings[key][1]
