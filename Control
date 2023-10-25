@@ -1,14 +1,30 @@
-while(1):
-	    #this getKey function is getting the input from keyboard
-            print(count)
-	    key = getKey(settings, key_timeout)
-            key = "w"
-	    count += 1
-              if key in moveBindings.keys():
-                x = moveBindings[key][0]
-                y = moveBindings[key][1]
-                z = moveBindings[key][2]
-                th = moveBindings[key][3]
+status = 0
+    forward_duration = 1.0
+    backward_duration = 1.5
+    right_duration =2.0
+    currenttime = 0.0
+    start = 0.0
+    try:
+        pub_thread.wait_for_subscribers()
+        pub_thread.update(x, y, z, th, speed, turn)
+        start = int(time.time()) #get the current starting time
+        print(msg)
+        print(vels(speed,turn))
+        while(1):
+            #key = getKey(settings, key_timeout)
+            currenttime = int(time.time()) #get the current time
+            #IN minutes
+            elapsedtime = (currenttime - start)//60
+            elapsedtime_s = (currenttime - start) % 60
+            print(elapsedtime)
+	    #Move forward for 1 min
+            if elapsedtime < forward_duration:
+                key = 'w'
+            elif (elapsedtime-0.5) >= backward_duration:
+		key = 'd'
+            elif elapsedtime >= right_duration:
+		key = 'w'
+
             if key in moveBindings.keys():
                 x = moveBindings[key][0]
                 y = moveBindings[key][1]
@@ -39,3 +55,6 @@ while(1):
                     break
 
             pub_thread.update(x, y, z, th, speed, turn)
+
+    except Exception as e:
+        print(e)
